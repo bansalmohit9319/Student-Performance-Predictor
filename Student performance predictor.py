@@ -7,19 +7,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
-
-# ======================================
-# PAGE CONFIG
-# ======================================
 st.set_page_config(
     page_title="AI Student Dashboard",
-    page_icon="🎓",
     layout="wide"
 )
 
-# ======================================
-# CUSTOM CSS
-# ======================================
 st.markdown("""
 <style>
 .main {
@@ -48,16 +40,10 @@ h1, h2, h3 {
 """, unsafe_allow_html=True)
 
 
-# ======================================
-# TITLE
-# ======================================
-st.title("🎓 AI Student Performance Dashboard")
+st.title(" AI Student Performance Dashboard")
 st.write("Smart ML-powered prediction system")
 
 
-# ======================================
-# SIDEBAR
-# ======================================
 st.sidebar.header(" Dashboard Menu")
 
 uploaded_file = st.sidebar.file_uploader(
@@ -66,9 +52,6 @@ uploaded_file = st.sidebar.file_uploader(
 )
 
 
-# ======================================
-# DATASET
-# ======================================
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
 else:
@@ -85,23 +68,13 @@ else:
     })
 
 
-# ======================================
-# DATA PREVIEW
-# ======================================
 st.subheader(" Dataset Preview")
 st.dataframe(df, use_container_width=True)
 
 
-# ======================================
-# FEATURES
-# ======================================
 X = df[["study_hours", "attendance", "marks"]]
 y = df["result"]
 
-
-# ======================================
-# TRAIN TEST SPLIT
-# ======================================
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
@@ -110,9 +83,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 
-# ======================================
-# MODELS
-# ======================================
 models = {
     "Random Forest": RandomForestClassifier(
         n_estimators=200,
@@ -137,9 +107,6 @@ for name, model in models.items():
     results[name] = (model, acc)
 
 
-# ======================================
-# BEST MODEL
-# ======================================
 best_model_name = max(
     results,
     key=lambda x: results[x][1]
@@ -150,9 +117,6 @@ best_model = results[best_model_name][0]
 best_accuracy = results[best_model_name][1]
 
 
-# ======================================
-# MODEL PERFORMANCE
-# ======================================
 st.subheader(" Model Performance")
 
 col1, col2 = st.columns(2)
@@ -169,10 +133,6 @@ with col2:
         f"Best Model: {best_model_name}"
     )
 
-
-# ======================================
-# USER INPUT
-# ======================================
 st.subheader("Student Prediction System")
 
 student_name = st.text_input(
@@ -199,10 +159,6 @@ with col3:
         0, 100, 60
     )
 
-
-# ======================================
-# PREDICTION
-# ======================================
 if st.button(" Predict Performance"):
 
     input_data = pd.DataFrame(
@@ -237,13 +193,9 @@ if st.button(" Predict Performance"):
         f"Prediction Confidence: {confidence:.2f}%"
     )
 
-    # progress bar
+    
     st.progress(int(confidence))
 
-
-# ======================================
-# FEATURE IMPORTANCE
-# ======================================
 st.subheader(" Feature Importance Analysis")
 
 rf_model = results["Random Forest"][0]
@@ -265,9 +217,6 @@ ax.set_title(
 st.pyplot(fig)
 
 
-# ======================================
-# ANALYTICS
-# ======================================
 st.subheader(" Dataset Analytics")
 
 col1, col2 = st.columns(2)
@@ -278,10 +227,6 @@ with col1:
 with col2:
     st.line_chart(df["attendance"])
 
-
-# ======================================
-# DOWNLOAD REPORT
-# ======================================
 st.subheader("⬇ Export Dataset")
 
 csv = df.to_csv(index=False).encode("utf-8")
@@ -293,7 +238,3 @@ st.download_button(
     mime="text/csv"
 )
 
-
-
-
-#streamlit run "Student performance predictor.py"
