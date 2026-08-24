@@ -57,13 +57,3 @@ The prediction system uses:
 
 ---
 
-## Project Structure
-
-- `test.py` — Main Streamlit application file
-
----
-
-## How to Run
-
-```bash
-streamlit run "Student performance predictor.py"
